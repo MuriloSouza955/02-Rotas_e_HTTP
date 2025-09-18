@@ -1,15 +1,12 @@
 import fastify from 'fastify'
 import crypto from 'crypto'
-import { db } from './database.js'
+import { env } from './env/index.js'
+import { transactionsRoutes } from './routes/transactions.js'
 
 const app = fastify()
 
-app.get('/hello', async () => {
-  const transactions = await db('transactions')
-  .where("amount", 100)
-  return transactions
-})
+app.register(transactionsRoutes)
 
-app.listen({ port: 3333 }).then(() => {
-  console.log('HTTP server running on http://localhost:3333')
+app.listen({ port: env.PORT }).then(() => {
+  console.log('✅ HTTP server is running!')
 })
